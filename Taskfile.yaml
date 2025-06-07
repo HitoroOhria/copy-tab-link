@@ -1,0 +1,22 @@
+version: "3"
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task -l --sort none
+
+  run:
+    desc: Run go program
+    cmds:
+      - go run ./...
+
+  fmt:
+    desc: Format go program
+    cmds:
+      - go fmt ./...
+
+  vet:
+    desc: Doctor go program
+    cmds:
+      - go vet ./...
