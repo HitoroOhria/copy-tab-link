@@ -9,6 +9,8 @@ import (
 type Tab struct {
 	Title string
 	URL   *url.URL
+
+	handlers []TitleFormattingHandler
 }
 
 func NewTab(title string, rawURL string) (*Tab, error) {
@@ -18,8 +20,9 @@ func NewTab(title string, rawURL string) (*Tab, error) {
 	}
 
 	return &Tab{
-		Title: title,
-		URL:   u,
+		Title:    title,
+		URL:      u,
+		handlers: allHandlers,
 	}, nil
 }
 
@@ -35,24 +38,28 @@ func (t *Tab) RemoveTabNumber() {
 // FormatTitleForEachSite はサイトに応じてタイトルを整形する
 // 関数の仕様はテストを参照してください
 func (t *Tab) FormatTitleForEachSite() error {
-	var formatted string
-	var err error
+	for _, handler := range t.handlers {
+		if !handler.Match(t.URL) {
+			continue
+		}
 
-	switch t.URL.Hostname() {
-	case "github.com":
-		formatted, err = t.handleGitHub()
-	case "tabelog.com":
-		formatted, err = t.handleTabelog()
-	}
-	if err != nil {
-		return fmt.Errorf("failed to format title: %w", err)
+		formatted, err := handler.Handle(t.URL, t.Title)
+		if err != nil {
+			return fmt.Errorf("handler.Handle: name = %s, title = %s, url = %s: %w", handler.Name(), t.Title, t.URL, err)
+		}
+
+		t.Title = formatted
+		return nil
 	}
 
-	t.Title = formatted
 	return nil
 }
 
 // MarkdownLink は [text](url) 形式の文字列を生成する
 func (t *Tab) MarkdownLink() string {
 	return fmt.Sprintf("[%s](%s)", t.Title, t.URL)
+}
+
+func (t *Tab) SetHandlerForTest() {
+	t.handlers = allHandlers
 }

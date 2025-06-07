@@ -101,6 +101,9 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   tt.fields.URL,
 			}
 
+			tab.SetHandlerForTest()
+			tt.want.SetHandlerForTest()
+
 			err := tab.FormatTitleForEachSite()
 			if tt.wantErr == nil {
 				assert.NoError(t, err)
