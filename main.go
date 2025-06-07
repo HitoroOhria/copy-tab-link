@@ -32,6 +32,11 @@ func main() {
 		os.Exit(1)
 	}
 	tab.RemoveTabNumber()
+	err = tab.FormatTitleForEachSite()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "タイトルフォーマットエラー: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Markdown形式でクリップボードにコピー
 	markdownLink := tab.MarkdownLink()
