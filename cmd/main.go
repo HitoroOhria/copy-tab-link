@@ -11,8 +11,9 @@ import (
 )
 
 const browserAppName = "Brave Browser"
-const copyCommand = "pbcopy"
 
+// アクティブなブラウザのタイトルとリンクを取得し、Markdown形式でクリップボードにコピーする
+// 動作環境の対象は macOS である
 func main() {
 	// ブラウザのタイトルを取得
 	title, err := getBrowserTitle(browserAppName)
@@ -89,7 +90,7 @@ func getBrowserURL(appName string) (string, error) {
 
 // copyToClipboard はテキストをクリップボードにコピーする
 func copyToClipboard(text string) error {
-	cmd := exec.Command(copyCommand)
+	cmd := exec.Command("pbcopy")
 	cmd.Stdin = strings.NewReader(text)
 
 	err := cmd.Run()
