@@ -32,6 +32,18 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "github.com であり、Issue である場合、Issue タイトルと番号のみを残すこと",
+			fields: fields{
+				Title: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go",
+				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
+			},
+			want: &main.Tab{
+				Title: "fails with gcc 4.4.1 #1",
+				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {
