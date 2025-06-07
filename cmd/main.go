@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -16,39 +17,48 @@ func main() {
 	// ブラウザのタイトルを取得
 	title, err := getBrowserTitle(browserAppName)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "タイトル取得エラー: %v\n", err)
-		os.Exit(1)
+		handleError(err, "failed to get title")
+		return
 	}
 
 	// ブラウザのURLを取得
 	url, err := getBrowserURL(browserAppName)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "URL取得エラー: %v\n", err)
-		os.Exit(1)
+		handleError(err, "failed to get url")
+		return
 	}
 
 	// タイトルを編集
 	tab, err := model.NewTab(title, url)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Tab作成エラー: %v\n", err)
-		os.Exit(1)
+		handleError(err, "failed to new Tab struct")
+		return
 	}
 	tab.RemoveTabNumber()
 	err = tab.FormatTitleForEachSite()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "タイトルフォーマットエラー: %v\n", err)
-		os.Exit(1)
+		handleError(err, "failed to format title")
+		return
 	}
 
 	// Markdown形式でクリップボードにコピー
 	markdownLink := tab.MarkdownLink()
 	err = copyToClipboard(markdownLink)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "クリップボードコピーエラー: %v\n", err)
-		os.Exit(1)
+		handleError(err, "failed to copy to clipboard")
+		return
 	}
 
-	fmt.Println("リンクをクリップボードにコピーしました")
+	fmt.Println("success to copy title to clipboard")
+}
+
+func handleError(err error, msg string) {
+	_, printErr := fmt.Fprintf(os.Stderr, "%s: %v\n", msg, err)
+	if printErr != nil {
+		log.Fatalf("fmt.Fprintf: %v\n", printErr)
+	}
+
+	os.Exit(1)
 }
 
 // getBrowserTitle はブラウザのアクティブタブのタイトルを取得する
