@@ -56,6 +56,30 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "tabelog.com であり、店舗ページトップである場合、店名のみを残すこと",
+			fields: fields{
+				Title: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ",
+				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
+			},
+			want: &main.Tab{
+				Title: "下北沢 焼とりダービーのご予約 | 食べログ",
+				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "tabelog.com であり、店舗ページトップであり、（）ありの場合、店名のみを残すこと",
+			fields: fields{
+				Title: "下北沢 肉バル Bon （ボン【旧店名】ワイン食堂 馬肉de Bon）のご予約 - 下北沢/バル | 食べログ",
+				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
+			},
+			want: &main.Tab{
+				Title: "下北沢 肉バル Bon | 食べログ",
+				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {

@@ -41,6 +41,8 @@ func (t *Tab) FormatTitleForEachSite() error {
 	switch t.URL.Hostname() {
 	case "github.com":
 		formatted, err = t.handleGitHub()
+	case "tabelog.com":
+		formatted, err = t.handleTabelog()
 	}
 	if err != nil {
 		return fmt.Errorf("failed to format title: %w", err)
