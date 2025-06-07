@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,11 +11,20 @@ import (
 	"github.com/HitoroOhria/copy_tab_link/model"
 )
 
-const browserAppName = "Brave Browser"
+const defaultBrowserAppName = "Brave Browser"
+
+func getArgs() string {
+	browserAppName := flag.String("browser-name", defaultBrowserAppName, "Browser app name.")
+	flag.Parse()
+
+	return *browserAppName
+}
 
 // アクティブなブラウザのタイトルとリンクを取得し、Markdown形式でクリップボードにコピーする
 // 動作環境の対象は macOS である
 func main() {
+	browserAppName := getArgs()
+
 	// ブラウザのタイトルを取得
 	title, err := getBrowserTitle(browserAppName)
 	if err != nil {

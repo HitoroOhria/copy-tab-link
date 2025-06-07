@@ -12,7 +12,9 @@ tasks:
   run:
     desc: Run go program
     cmds:
-      - go run ./...
+      - go run ./... -browser-name="{{.BROWSER_NAME}}"
+    vars:
+      BROWSER_NAME: "{{.BROWSER_NAME}}"
 
   fmt:
     desc: Format go program
