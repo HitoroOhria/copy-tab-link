@@ -12,6 +12,7 @@ type TitleFormattingHandler interface {
 
 var AllHandlers = []TitleFormattingHandler{
 	&GitHubHandler{},
+	&QiitaHandler{},
 	&ConfluenceHandler{},
 	&TabelogHandler{},
 }

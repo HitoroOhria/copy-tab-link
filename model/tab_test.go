@@ -57,6 +57,18 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "qiita.com であり、記事である場合、タイトルのみを残すこと",
+			fields: fields{
+				Title: "ドメインの.comとか.jpってなに？ #FQDN - Qiita",
+				URL:   parseURL(t, "https://qiita.com/miyuki_samitani/items/1667128245b14ae6e421"),
+			},
+			want: &model.Tab{
+				Title: "ドメインの.comとか.jpってなに？ - Qiita",
+				URL:   parseURL(t, "https://qiita.com/miyuki_samitani/items/1667128245b14ae6e421"),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "example.atlassian.net/wiki (Confluence) であり、ページである場合、ページタイトルのみを残すこと",
 			fields: fields{
 				Title: "設計ドキュメント - EXAMPLE - 開発チーム - Confluence",
