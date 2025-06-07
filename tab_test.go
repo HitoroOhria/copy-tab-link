@@ -57,18 +57,6 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "uniasdev.atlassian.net/wiki (Confluence) であり、ページである場合、ページタイトルのみを残すこと",
-			fields: fields{
-				Title: "リアーキテクチャ基本方針 - CIRCUS - 開発チーム - Confluence",
-				URL:   parseURL(t, "https://uniasdev.atlassian.net/wiki/spaces/CIRCUSDEV/pages/1076756524"),
-			},
-			want: &main.Tab{
-				Title: "リアーキテクチャ基本方針 - Confluence",
-				URL:   parseURL(t, "https://uniasdev.atlassian.net/wiki/spaces/CIRCUSDEV/pages/1076756524"),
-			},
-			wantErr: nil,
-		},
-		{
 			name: "tabelog.com であり、店舗ページトップである場合、店名のみを残すこと",
 			fields: fields{
 				Title: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ",

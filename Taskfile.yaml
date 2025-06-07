@@ -25,9 +25,16 @@ tasks:
       - go vet ./...
 
   test:
-    desc: Test go program
+    desc: Test all case
     cmds:
-      - go test ./...
+      - go test -v ./...
+
+  test:run:
+    desc: Test specific case
+    cmds:
+      - go test -v -run {{.NAME}}
+    requires:
+      vars: [NAME]
 
   dev:title:
     desc: Get browser title for debug
