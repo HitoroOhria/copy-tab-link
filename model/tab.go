@@ -8,6 +8,8 @@ import (
 	"github.com/HitoroOhria/copy_tab_link/handler"
 )
 
+// Tab はタイトルを編集するためのタイトルと URL のセット
+// 内部にハンドラーを保持し、サイトごとのタイトルの整形を行う
 type Tab struct {
 	Title string
 	URL   *url.URL
