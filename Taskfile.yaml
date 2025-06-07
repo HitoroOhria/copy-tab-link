@@ -33,7 +33,7 @@ tasks:
     desc: Get browser title for debug
     cmds:
       - open "{{.URL}}"
-      - sleep 1
+      - sleep 2
       - |
         osascript -e 'tell application "{{.BROWSER_NAME}}" to get title of active tab of front window' | \
           tee /dev/tty | \

@@ -57,6 +57,18 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "uniasdev.atlassian.net/wiki (Confluence) であり、ページである場合、ページタイトルのみを残すこと",
+			fields: fields{
+				Title: "リアーキテクチャ基本方針 - CIRCUS - 開発チーム - Confluence",
+				URL:   parseURL(t, "https://uniasdev.atlassian.net/wiki/spaces/CIRCUSDEV/pages/1076756524"),
+			},
+			want: &main.Tab{
+				Title: "リアーキテクチャ基本方針 - Confluence",
+				URL:   parseURL(t, "https://uniasdev.atlassian.net/wiki/spaces/CIRCUSDEV/pages/1076756524"),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "tabelog.com であり、店舗ページトップである場合、店名のみを残すこと",
 			fields: fields{
 				Title: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ",
@@ -69,7 +81,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "tabelog.com であり、店舗ページトップであり、（）ありの場合、店名のみを残すこと",
+			name: "tabelog.com であり、店舗ページトップであり、店名に（）ありの場合、店名のみを残すこと",
 			fields: fields{
 				Title: "下北沢 肉バル Bon （ボン【旧店名】ワイン食堂 馬肉de Bon）のご予約 - 下北沢/バル | 食べログ",
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
