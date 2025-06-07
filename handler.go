@@ -42,7 +42,7 @@ func (h *GitHubHandler) Handle(u *url.URL, title string) (string, error) {
 		re := regexp.MustCompile(`^.+: (.+) · Issue #(\d+) · .+$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 3 {
-			return "", fmt.Errorf("GitHub issue title format not matched: title = %s", title)
+			return "", fmt.Errorf("GitHub issue title format not matched")
 		}
 		replaced := fmt.Sprintf("%s #%s", matches[1], matches[2])
 
@@ -53,7 +53,7 @@ func (h *GitHubHandler) Handle(u *url.URL, title string) (string, error) {
 		re := regexp.MustCompile(`^.+: (.+) by .+ · Pull Request #(\d+) · .+$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 3 {
-			return "", fmt.Errorf("GitHub PR title format not matched: title = %s", title)
+			return "", fmt.Errorf("GitHub PR title format not matched")
 		}
 		replaced := fmt.Sprintf("%s #%s", matches[1], matches[2])
 
@@ -77,7 +77,7 @@ func (h *ConfluenceHandler) Handle(u *url.URL, title string) (string, error) {
 	re := regexp.MustCompile(`^(.+?) - .+ - Confluence$`)
 	matches := re.FindStringSubmatch(title)
 	if len(matches) < 2 {
-		return "", fmt.Errorf("Confluence title format not matched: title = %s", title)
+		return "", fmt.Errorf("confluence title format not matched")
 	}
 
 	return fmt.Sprintf("%s - Confluence", matches[1]), nil
@@ -110,7 +110,7 @@ func (h *TabelogHandler) Handle(u *url.URL, title string) (string, error) {
 			return fmt.Sprintf("%sのご予約 | 食べログ", matches[1]), nil
 		}
 
-		return "", fmt.Errorf("tabelog title format not matched: title = %s", title)
+		return "", fmt.Errorf("tabelog title format not matched")
 	}
 
 	return title, nil
