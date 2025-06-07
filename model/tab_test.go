@@ -69,6 +69,18 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "stackoverflow.com であり、記事である場合、タイトルのみを残すこと",
+			fields: fields{
+				Title: "python - How to `assert_called_with` an object instance? - Stack Overflow",
+				URL:   parseURL(t, "https://stackoverflow.com/questions/79656866/how-to-assert-called-with-an-object-instance"),
+			},
+			want: &model.Tab{
+				Title: "How to `assert_called_with` an object instance? - Stack Overflow",
+				URL:   parseURL(t, "https://stackoverflow.com/questions/79656866/how-to-assert-called-with-an-object-instance"),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "zenn.com であり、記事である場合、Zenn を付与すること",
 			fields: fields{
 				Title: "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！",
