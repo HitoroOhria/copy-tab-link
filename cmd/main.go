@@ -55,7 +55,7 @@ func main() {
 func handleError(err error, msg string) {
 	_, printErr := fmt.Fprintf(os.Stderr, "%s: %v\n", msg, err)
 	if printErr != nil {
-		log.Fatalf("fmt.Fprintf: %v\n", printErr)
+		log.Fatalf("fmt.Fprintf: %v\n. and %s: %v\n", printErr, msg, err)
 	}
 
 	os.Exit(1)
