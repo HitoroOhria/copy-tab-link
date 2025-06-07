@@ -1,10 +1,10 @@
-package main_test
+package model_test
 
 import (
 	"net/url"
 	"testing"
 
-	"github.com/HitoroOhria/copy_tab_link"
+	"github.com/HitoroOhria/copy_tab_link/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +17,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    *main.Tab
+		want    *model.Tab
 		wantErr error
 	}{
 		{
@@ -26,7 +26,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				Title: "golang/go: The Go programming language",
 				URL:   parseURL(t, "https://github.com/golang/go"),
 			},
-			want: &main.Tab{
+			want: &model.Tab{
 				Title: "golang/go",
 				URL:   parseURL(t, "https://github.com/golang/go"),
 			},
@@ -38,7 +38,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				Title: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go",
 				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
 			},
-			want: &main.Tab{
+			want: &model.Tab{
 				Title: "fails with gcc 4.4.1 #1",
 				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
 			},
@@ -50,7 +50,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				Title: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go",
 				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
 			},
-			want: &main.Tab{
+			want: &model.Tab{
 				Title: "Fixed url parsing with invalid slashes. #9219",
 				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
 			},
@@ -62,7 +62,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				Title: "設計ドキュメント - EXAMPLE - 開発チーム - Confluence",
 				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),
 			},
-			want: &main.Tab{
+			want: &model.Tab{
 				Title: "設計ドキュメント - Confluence",
 				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),
 			},
@@ -74,7 +74,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				Title: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ",
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
 			},
-			want: &main.Tab{
+			want: &model.Tab{
 				Title: "下北沢 焼とりダービーのご予約 | 食べログ",
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
 			},
@@ -86,7 +86,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				Title: "下北沢 肉バル Bon （ボン【旧店名】ワイン食堂 馬肉de Bon）のご予約 - 下北沢/バル | 食べログ",
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
 			},
-			want: &main.Tab{
+			want: &model.Tab{
 				Title: "下北沢 肉バル Bon | 食べログ",
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
 			},
@@ -96,7 +96,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tab := &main.Tab{
+			tab := &model.Tab{
 				Title: tt.fields.Title,
 				URL:   tt.fields.URL,
 			}

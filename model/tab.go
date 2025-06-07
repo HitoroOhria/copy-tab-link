@@ -1,16 +1,18 @@
-package main
+package model
 
 import (
 	"fmt"
 	"net/url"
 	"regexp"
+
+	"github.com/HitoroOhria/copy_tab_link/handler"
 )
 
 type Tab struct {
 	Title string
 	URL   *url.URL
 
-	handlers []TitleFormattingHandler
+	handlers []handler.TitleFormattingHandler
 }
 
 func NewTab(title string, rawURL string) (*Tab, error) {
@@ -22,7 +24,7 @@ func NewTab(title string, rawURL string) (*Tab, error) {
 	return &Tab{
 		Title:    title,
 		URL:      u,
-		handlers: allHandlers,
+		handlers: handler.AllHandlers,
 	}, nil
 }
 
@@ -61,5 +63,5 @@ func (t *Tab) MarkdownLink() string {
 }
 
 func (t *Tab) SetHandlerForTest() {
-	t.handlers = allHandlers
+	t.handlers = handler.AllHandlers
 }

@@ -1,4 +1,4 @@
-package main_test
+package model_test
 
 import (
 	"net/url"

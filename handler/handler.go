@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ type TitleFormattingHandler interface {
 	Handle(u *url.URL, title string) (string, error)
 }
 
-var allHandlers = []TitleFormattingHandler{
+var AllHandlers = []TitleFormattingHandler{
 	&GitHubHandler{},
 	&ConfluenceHandler{},
 	&TabelogHandler{},

@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/HitoroOhria/copy_tab_link/model"
 )
 
 const browserAppName = "Brave Browser"
@@ -26,7 +28,7 @@ func main() {
 	}
 
 	// タイトルを編集
-	tab, err := NewTab(title, url)
+	tab, err := model.NewTab(title, url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Tab作成エラー: %v\n", err)
 		os.Exit(1)
