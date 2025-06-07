@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"regexp"
 	"strings"
 )
 
@@ -26,11 +25,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	// タブ番号を除去
-	cleanedTitle := removeTabNumber(title)
+	// タイトルを編集
+	tab := NewTab(title, url)
+	tab.RemoveTabNumber()
 
 	// Markdown形式でクリップボードにコピー
-	markdownLink := makeMarkdownLink(cleanedTitle, url)
+	markdownLink := tab.MarkdownLink()
 	err = copyToClipboard(markdownLink)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "クリップボードコピーエラー: %v\n", err)
@@ -64,17 +64,6 @@ func getBrowserURL(appName string) (string, error) {
 	}
 
 	return strings.TrimSpace(string(output)), nil
-}
-
-// removeTabNumber はタイトルからタブ番号を除去する
-// "Chrome Show Tab Numbers" Extension で表示される付与される "1. Google" の番号を対象とする
-func removeTabNumber(title string) string {
-	re := regexp.MustCompile(`^[0-9]\. `)
-	return re.ReplaceAllString(title, "")
-}
-
-func makeMarkdownLink(title, url string) string {
-	return fmt.Sprintf("[%s](%s)", title, url)
 }
 
 // copyToClipboard はテキストをクリップボードにコピー
