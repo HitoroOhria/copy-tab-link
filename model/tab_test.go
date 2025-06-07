@@ -69,6 +69,18 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "zenn.com であり、記事である場合、Zenn を付与すること",
+			fields: fields{
+				Title: "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！",
+				URL:   parseURL(t, "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2"),
+			},
+			want: &model.Tab{
+				Title: "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！ - Zenn",
+				URL:   parseURL(t, "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2"),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "example.atlassian.net/wiki (Confluence) であり、ページである場合、ページタイトルのみを残すこと",
 			fields: fields{
 				Title: "設計ドキュメント - EXAMPLE - 開発チーム - Confluence",
