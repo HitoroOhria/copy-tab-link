@@ -26,7 +26,11 @@ func main() {
 	}
 
 	// タイトルを編集
-	tab := NewTab(title, url)
+	tab, err := NewTab(title, url)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Tab作成エラー: %v\n", err)
+		os.Exit(1)
+	}
 	tab.RemoveTabNumber()
 
 	// Markdown形式でクリップボードにコピー
@@ -66,7 +70,7 @@ func getBrowserURL(appName string) (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-// copyToClipboard はテキストをクリップボードにコピー
+// copyToClipboard はテキストをクリップボードにコピーする
 func copyToClipboard(text string) error {
 	cmd := exec.Command(copyCommand)
 	cmd.Stdin = strings.NewReader(text)

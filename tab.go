@@ -2,19 +2,25 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 	"regexp"
 )
 
 type Tab struct {
 	Title string
-	URL   string
+	URL   *url.URL
 }
 
-func NewTab(title string, url string) *Tab {
+func NewTab(title string, rawURL string) (*Tab, error) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		return nil, fmt.Errorf("url.Parse: %w", err)
+	}
+
 	return &Tab{
 		Title: title,
-		URL:   url,
-	}
+		URL:   u,
+	}, nil
 }
 
 // RemoveTabNumber はタイトルからタブ番号を除去する
