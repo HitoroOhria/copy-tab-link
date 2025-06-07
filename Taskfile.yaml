@@ -1,5 +1,8 @@
 version: "3"
 
+vars:
+  BROWSER_NAME: "Brave Browser"
+
 tasks:
   default:
     desc: List all available tasks
@@ -20,3 +23,20 @@ tasks:
     desc: Doctor go program
     cmds:
       - go vet ./...
+
+  test:
+    desc: Test go program
+    cmds:
+      - go test ./...
+
+  dev:title:
+    desc: Get browser title for debug
+    cmds:
+      - open "{{.URL}}"
+      - sleep 1
+      - |
+        osascript -e 'tell application "{{.BROWSER_NAME}}" to get title of active tab of front window' | \
+          tee /dev/tty | \
+          pbcopy
+    requires:
+      vars: [URL]
