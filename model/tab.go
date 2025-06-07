@@ -40,14 +40,14 @@ func (t *Tab) RemoveTabNumber() {
 // FormatTitleForEachSite はサイトに応じてタイトルを整形する
 // 関数の仕様はテストを参照してください
 func (t *Tab) FormatTitleForEachSite() error {
-	for _, handler := range t.handlers {
-		if !handler.Match(t.URL) {
+	for _, h := range t.handlers {
+		if !h.Match(t.URL) {
 			continue
 		}
 
-		formatted, err := handler.Handle(t.URL, t.Title)
+		formatted, err := h.Handle(t.URL, t.Title)
 		if err != nil {
-			return fmt.Errorf("handler.Handle: name = %s, title = %s, url = %s: %w", handler.Name(), t.Title, t.URL, err)
+			return fmt.Errorf("handler.Handle: name = %s, title = %s, url = %s: %w", h.Name(), t.Title, t.URL, err)
 		}
 
 		t.Title = formatted
