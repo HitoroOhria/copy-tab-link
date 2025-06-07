@@ -35,25 +35,15 @@ func (t *Tab) RemoveTabNumber() {
 // FormatTitleForEachSite はサイトに応じてタイトルを整形する
 // 関数の仕様はテストを参照してください
 func (t *Tab) FormatTitleForEachSite() error {
-	formatted := t.Title
-	hostname := t.URL.Hostname()
+	var formatted string
+	var err error
 
-	switch hostname {
+	switch t.URL.Hostname() {
 	case "github.com":
-		if regexp.MustCompile(`/issues/\d+$`).MatchString(t.URL.Path) {
-			// Issue の場合: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go" -> "fails with gcc 4.4.1 #1"
-			re := regexp.MustCompile(`^.+: (.+) · Issue #(\d+) · .+$`)
-			matches := re.FindStringSubmatch(t.Title)
-			if len(matches) < 3 {
-				return fmt.Errorf("GitHub issue title format not matched: %s", t.Title)
-			}
-			formatted = fmt.Sprintf("%s #%s", matches[1], matches[2])
-		} else {
-			// リポジトリルートの場合: "golang/go: The Go programming language" -> "golang/go"
-			re := regexp.MustCompile(`^(.+): .+$`)
-			replaced := re.ReplaceAllString(t.Title, "$1")
-			formatted = replaced
-		}
+		formatted, err = t.handleGitHub()
+	}
+	if err != nil {
+		return fmt.Errorf("failed to format title: %w", err)
 	}
 
 	t.Title = formatted
