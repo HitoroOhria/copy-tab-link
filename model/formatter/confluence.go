@@ -1,4 +1,4 @@
-package handler
+package formatter
 
 import (
 	"fmt"
@@ -7,17 +7,17 @@ import (
 	"strings"
 )
 
-type ConfluenceHandler struct{}
+type ConfluenceFormatter struct{}
 
-func (h *ConfluenceHandler) Name() string {
+func (h *ConfluenceFormatter) Name() string {
 	return "Confluence"
 }
 
-func (h *ConfluenceHandler) Match(u *url.URL) bool {
+func (h *ConfluenceFormatter) Match(u *url.URL) bool {
 	return strings.HasSuffix(u.Host, "atlassian.net") && strings.HasPrefix(u.Path, "/wiki/")
 }
 
-func (h *ConfluenceHandler) Handle(u *url.URL, title string) (string, error) {
+func (h *ConfluenceFormatter) Format(u *url.URL, title string) (string, error) {
 	re := regexp.MustCompile(`^(.+?) - .+ - Confluence$`)
 	matches := re.FindStringSubmatch(title)
 	if len(matches) < 2 {

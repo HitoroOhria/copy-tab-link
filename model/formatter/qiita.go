@@ -1,4 +1,4 @@
-package handler
+package formatter
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"regexp"
 )
 
-type QiitaHandler struct{}
+type QiitaFormatter struct{}
 
-func (h *QiitaHandler) Name() string {
+func (h *QiitaFormatter) Name() string {
 	return "Qiita"
 }
 
-func (h *QiitaHandler) Match(u *url.URL) bool {
+func (h *QiitaFormatter) Match(u *url.URL) bool {
 	return u.Host == "qiita.com"
 }
 
-func (h *QiitaHandler) Handle(u *url.URL, title string) (string, error) {
+func (h *QiitaFormatter) Format(u *url.URL, title string) (string, error) {
 	if regexp.MustCompile(`^/[^/]+/items/[a-f0-9]+$`).MatchString(u.Path) {
 		re := regexp.MustCompile(`^(.+?) #.+ - Qiita$`)
 		matches := re.FindStringSubmatch(title)

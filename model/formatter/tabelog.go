@@ -1,4 +1,4 @@
-package handler
+package formatter
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"regexp"
 )
 
-type TabelogHandler struct{}
+type TabelogFormatter struct{}
 
-func (h *TabelogHandler) Name() string {
+func (h *TabelogFormatter) Name() string {
 	return "Tabelog"
 }
 
-func (h *TabelogHandler) Match(u *url.URL) bool {
+func (h *TabelogFormatter) Match(u *url.URL) bool {
 	return u.Host == "tabelog.com"
 }
 
-func (h *TabelogHandler) Handle(u *url.URL, title string) (string, error) {
+func (h *TabelogFormatter) Format(u *url.URL, title string) (string, error) {
 	// 店舗ページの場合: /地域/A地域番号/A地域番号/店舗ID/
 	if regexp.MustCompile(`^/[^/]+/A\d{4}/A\d{6}/\d+/?$`).MatchString(u.Path) {
 		// 括弧ありの場合: "下北沢 肉バル Bon （ボン【旧店名】ワイン食堂 馬肉de Bon）のご予約 - 下北沢/バル | 食べログ" -> "下北沢 肉バル Bon | 食べログ"

@@ -137,8 +137,8 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   tt.fields.URL,
 			}
 
-			tab.SetHandlerForTest()
-			tt.want.SetHandlerForTest()
+			tab.SetFormatterForTest()
+			tt.want.SetFormatterForTest()
 
 			err := tab.FormatTitleForEachSite()
 			if tt.wantErr == nil {

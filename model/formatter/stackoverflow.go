@@ -1,4 +1,4 @@
-package handler
+package formatter
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"regexp"
 )
 
-type StackOverflowHandler struct{}
+type StackOverflowFormatter struct{}
 
-func (h *StackOverflowHandler) Name() string {
+func (h *StackOverflowFormatter) Name() string {
 	return "Stack Overflow"
 }
 
-func (h *StackOverflowHandler) Match(u *url.URL) bool {
+func (h *StackOverflowFormatter) Match(u *url.URL) bool {
 	return u.Host == "stackoverflow.com"
 }
 
-func (h *StackOverflowHandler) Handle(u *url.URL, title string) (string, error) {
+func (h *StackOverflowFormatter) Format(u *url.URL, title string) (string, error) {
 	if regexp.MustCompile(`^/questions/\d+/.+$`).MatchString(u.Path) {
 		re := regexp.MustCompile(`^[^-]+ - (.+) - Stack Overflow$`)
 		matches := re.FindStringSubmatch(title)

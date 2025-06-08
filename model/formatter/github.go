@@ -1,4 +1,4 @@
-package handler
+package formatter
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"regexp"
 )
 
-type GitHubHandler struct{}
+type GitHubFormatter struct{}
 
-func (h *GitHubHandler) Name() string {
+func (h *GitHubFormatter) Name() string {
 	return "GitHub"
 }
 
-func (h *GitHubHandler) Match(u *url.URL) bool {
+func (h *GitHubFormatter) Match(u *url.URL) bool {
 	return u.Host == "github.com"
 }
 
-func (h *GitHubHandler) Handle(u *url.URL, title string) (string, error) {
+func (h *GitHubFormatter) Format(u *url.URL, title string) (string, error) {
 	// リポジトリルートの場合: "golang/go: The Go programming language" -> "golang/go"
 	if regexp.MustCompile(`^/[^/]+/[^/]+/?$`).MatchString(u.Path) {
 		re := regexp.MustCompile(`^(.+): .+$`)

@@ -1,4 +1,4 @@
-package handler
+package formatter
 
 import (
 	"fmt"
@@ -6,17 +6,17 @@ import (
 	"regexp"
 )
 
-type ZennHandler struct{}
+type ZennFormatter struct{}
 
-func (h *ZennHandler) Name() string {
+func (h *ZennFormatter) Name() string {
 	return "Zenn"
 }
 
-func (h *ZennHandler) Match(u *url.URL) bool {
+func (h *ZennFormatter) Match(u *url.URL) bool {
 	return u.Host == "zenn.dev"
 }
 
-func (h *ZennHandler) Handle(u *url.URL, title string) (string, error) {
+func (h *ZennFormatter) Format(u *url.URL, title string) (string, error) {
 	if regexp.MustCompile(`^/[^/]+/.+$`).MatchString(u.Path) {
 		return fmt.Sprintf("%s - Zenn", title), nil
 	}

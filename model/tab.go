@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"regexp"
 
-	"github.com/HitoroOhria/copy_tab_link/handler"
+	"github.com/HitoroOhria/copy_tab_link/model/formatter"
 )
 
 // Tab はタイトルを編集するためのタイトルと URL のセット
@@ -14,7 +14,7 @@ type Tab struct {
 	Title string
 	URL   *url.URL
 
-	handlers []handler.TitleFormattingHandler
+	formatters []formatter.TabFormatter
 }
 
 func NewTab(title string, rawURL string) (*Tab, error) {
@@ -24,9 +24,9 @@ func NewTab(title string, rawURL string) (*Tab, error) {
 	}
 
 	return &Tab{
-		Title:    title,
-		URL:      u,
-		handlers: handler.AllHandlers,
+		Title:      title,
+		URL:        u,
+		formatters: formatter.AllFormatters,
 	}, nil
 }
 
@@ -42,14 +42,14 @@ func (t *Tab) RemoveTabNumber() {
 // FormatTitleForEachSite はサイトに応じてタイトルを整形する
 // 関数の仕様はテストを参照してください
 func (t *Tab) FormatTitleForEachSite() error {
-	for _, h := range t.handlers {
+	for _, h := range t.formatters {
 		if !h.Match(t.URL) {
 			continue
 		}
 
-		formatted, err := h.Handle(t.URL, t.Title)
+		formatted, err := h.Format(t.URL, t.Title)
 		if err != nil {
-			return fmt.Errorf("handler.Handle: name = %s, title = %s, url = %s: %w", h.Name(), t.Title, t.URL, err)
+			return fmt.Errorf("formatter.Format: name = %s, title = %s, url = %s: %w", h.Name(), t.Title, t.URL, err)
 		}
 
 		t.Title = formatted
@@ -64,6 +64,6 @@ func (t *Tab) MarkdownLink() string {
 	return fmt.Sprintf("[%s](%s)", t.Title, t.URL)
 }
 
-func (t *Tab) SetHandlerForTest() {
-	t.handlers = handler.AllHandlers
+func (t *Tab) SetFormatterForTest() {
+	t.formatters = formatter.AllFormatters
 }
