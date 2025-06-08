@@ -28,7 +28,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://github.com/golang/go"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("golang/go"),
+				Title: value.Title("golang/go"),
 				URL:   parseURL(t, "https://github.com/golang/go"),
 			},
 			wantErr: nil,
@@ -40,7 +40,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("fails with gcc 4.4.1 #1"),
+				Title: value.Title("fails with gcc 4.4.1 #1"),
 				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
 			},
 			wantErr: nil,
@@ -52,7 +52,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("Fixed url parsing with invalid slashes. #9219"),
+				Title: value.Title("Fixed url parsing with invalid slashes. #9219"),
 				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
 			},
 			wantErr: nil,
@@ -64,7 +64,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://qiita.com/miyuki_samitani/items/1667128245b14ae6e421"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("ドメインの.comとか.jpってなに？ - Qiita"),
+				Title: value.Title("ドメインの.comとか.jpってなに？ - Qiita"),
 				URL:   parseURL(t, "https://qiita.com/miyuki_samitani/items/1667128245b14ae6e421"),
 			},
 			wantErr: nil,
@@ -76,7 +76,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://stackoverflow.com/questions/79656866/how-to-assert-called-with-an-object-instance"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("How to `assert_called_with` an object instance? - Stack Overflow"),
+				Title: value.Title("How to `assert_called_with` an object instance? - Stack Overflow"),
 				URL:   parseURL(t, "https://stackoverflow.com/questions/79656866/how-to-assert-called-with-an-object-instance"),
 			},
 			wantErr: nil,
@@ -88,7 +88,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("【初心者歓迎】第２回 AI Agent Hackathon、開催決定！ - Zenn"),
+				Title: value.Title("【初心者歓迎】第２回 AI Agent Hackathon、開催決定！ - Zenn"),
 				URL:   parseURL(t, "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2"),
 			},
 			wantErr: nil,
@@ -100,7 +100,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("設計ドキュメント - Confluence"),
+				Title: value.Title("設計ドキュメント - Confluence"),
 				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),
 			},
 			wantErr: nil,
@@ -112,7 +112,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("下北沢 焼とりダービーのご予約 | 食べログ"),
+				Title: value.Title("下北沢 焼とりダービーのご予約 | 食べログ"),
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
 			},
 			wantErr: nil,
@@ -124,7 +124,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
 			},
 			want: &model.Tab{
-				Title: value.NewTitle("下北沢 肉バル Bon | 食べログ"),
+				Title: value.Title("下北沢 肉バル Bon | 食べログ"),
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
 			},
 			wantErr: nil,
@@ -134,7 +134,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tab := &model.Tab{
-				Title: value.NewTitle(tt.fields.Title),
+				Title: value.Title(tt.fields.Title),
 				URL:   tt.fields.URL,
 			}
 
