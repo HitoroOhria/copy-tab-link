@@ -7,7 +7,7 @@ import (
 type TabFormatter interface {
 	Name() string
 	Match(domain value.Domain) bool
-	Format(path value.Path, title string) (newTitle string, err error)
+	Format(path value.Path, title value.Title) (value.Title, error)
 }
 
 var AllFormatters = []TabFormatter{

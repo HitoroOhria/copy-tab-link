@@ -3,7 +3,6 @@ package model
 import (
 	"fmt"
 	"net/url"
-	"regexp"
 
 	"github.com/HitoroOhria/copy_tab_link/model/formatter"
 	"github.com/HitoroOhria/copy_tab_link/model/value"
@@ -12,20 +11,22 @@ import (
 // Tab はタイトルを編集するためのタイトルと URL のセット
 // 内部にハンドラーを保持し、サイトごとのタイトルの整形を行う
 type Tab struct {
-	Title string
+	Title value.Title
 	URL   *url.URL
 
 	formatters []formatter.TabFormatter
 }
 
 func NewTab(title string, rawURL string) (*Tab, error) {
+	t := value.NewTitle(title)
+
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return nil, fmt.Errorf("url.Parse: %w", err)
 	}
 
 	return &Tab{
-		Title:      title,
+		Title:      t,
 		URL:        u,
 		formatters: formatter.AllFormatters,
 	}, nil
@@ -34,10 +35,7 @@ func NewTab(title string, rawURL string) (*Tab, error) {
 // RemoveTabNumber はタイトルからタブ番号を除去する
 // "Chrome Show Tab Numbers" Extension で表示される付与される "1. Google" の番号を対象とする
 func (t *Tab) RemoveTabNumber() {
-	re := regexp.MustCompile(`^[0-9]\. `)
-	removed := re.ReplaceAllString(t.Title, "")
-
-	t.Title = removed
+	t.Title = t.Title.ReplaceAllString(`^[0-9]\. `, "")
 }
 
 // FormatTitleForEachSite はサイトに応じてタイトルを整形する

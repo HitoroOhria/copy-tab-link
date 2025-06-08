@@ -16,9 +16,9 @@ func (h *ZennFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsFQDN("zenn.dev")
 }
 
-func (h *ZennFormatter) Format(path value.Path, title string) (string, error) {
+func (h *ZennFormatter) Format(path value.Path, title value.Title) (value.Title, error) {
 	if path.MatchString(`^/[^/]+/.+$`) {
-		return fmt.Sprintf("%s - Zenn", title), nil
+		return value.NewTitle(fmt.Sprintf("%s - Zenn", title)), nil
 	}
 
 	return title, nil
