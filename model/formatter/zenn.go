@@ -1,8 +1,6 @@
 package formatter
 
 import (
-	"fmt"
-
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
@@ -17,8 +15,9 @@ func (h *ZennFormatter) Match(domain value.Domain) bool {
 }
 
 func (h *ZennFormatter) Format(path value.Path, title value.Title) (value.Title, error) {
+	// 記事の場合: "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！" -> "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！ - Zenn"
 	if path.MatchString(`^/[^/]+/.+$`) {
-		return value.NewTitle(fmt.Sprintf("%s - Zenn", title)), nil
+		return title.AddSuffix(" - Zenn"), nil
 	}
 
 	return title, nil

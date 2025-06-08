@@ -1,8 +1,6 @@
 package formatter
 
 import (
-	"fmt"
-
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
@@ -18,12 +16,8 @@ func (h *QiitaFormatter) Match(domain value.Domain) bool {
 
 func (h *QiitaFormatter) Format(path value.Path, title value.Title) (value.Title, error) {
 	if path.MatchString(`^/[^/]+/items/[a-f0-9]+$`) {
-		matches := title.FindStringSubmatch(`^(.+?) #.+ - Qiita$`)
-		if len(matches) < 2 {
-			return value.Title(""), fmt.Errorf("qiita title format not matched")
-		}
-
-		return value.NewTitle(fmt.Sprintf("%s - Qiita", matches[1])), nil
+		parts := title.DisassembleIntoParts(`^(.+?) #.+ - Qiita$`)
+		return parts.Assemble("%s - Qiita", 0)
 	}
 
 	return title, nil

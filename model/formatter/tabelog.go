@@ -1,8 +1,6 @@
 package formatter
 
 import (
-	"fmt"
-
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
@@ -20,18 +18,14 @@ func (h *TabelogFormatter) Format(path value.Path, title value.Title) (value.Tit
 	// 店舗ページの場合: /地域/A地域番号/A地域番号/店舗ID/
 	if path.MatchString(`^/[^/]+/A\d{4}/A\d{6}/\d+/?$`) {
 		// 括弧ありの場合: "下北沢 肉バル Bon （ボン【旧店名】ワイン食堂 馬肉de Bon）のご予約 - 下北沢/バル | 食べログ" -> "下北沢 肉バル Bon | 食べログ"
-		matches := title.FindStringSubmatch(`^([^（]+\S)\s*（.*?）.*? \| 食べログ$`)
-		if len(matches) >= 2 {
-			return value.NewTitle(fmt.Sprintf("%s | 食べログ", matches[1])), nil
+		if title.Contains("（") {
+			parts := title.DisassembleIntoParts(`^([^（]+\S)\s*（.*?）.*? \| 食べログ$`)
+			return parts.Assemble("%s | 食べログ", 0)
 		}
 
 		// 括弧なしの場合: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ" -> "下北沢 焼とりダービーのご予約 | 食べログ"
-		matches = title.FindStringSubmatch(`^(.+?)のご予約 - .+ \| 食べログ$`)
-		if len(matches) >= 2 {
-			return value.NewTitle(fmt.Sprintf("%sのご予約 | 食べログ", matches[1])), nil
-		}
-
-		return value.Title(""), fmt.Errorf("tabelog title format not matched")
+		parts := title.DisassembleIntoParts(`^(.+?)のご予約 - .+ \| 食べログ$`)
+		return parts.Assemble("%sのご予約 | 食べログ", 0)
 	}
 
 	return title, nil
