@@ -36,7 +36,7 @@ tasks:
     cmds:
       - go test -v -run {{.NAME}}
     requires:
-      vars: [NAME]
+      vars: [ NAME ]
 
   dev:title:
     desc: Get browser title for debug
@@ -48,4 +48,4 @@ tasks:
           tee /dev/tty | \
           pbcopy
     requires:
-      vars: [URL]
+      vars: [ URL ]
