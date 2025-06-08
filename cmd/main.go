@@ -46,7 +46,7 @@ func main() {
 		return
 	}
 	tab.RemoveTabNumber()
-	err = tab.FormatTitleForEachSite()
+	err = tab.FormatForEachSite()
 	if err != nil {
 		handleError(err, "failed to format title")
 		return

@@ -48,15 +48,15 @@ func (u *URL) Path() string {
 
 func (u *URL) RemoveLastPath() (*URL, error) {
 	newURL := u.duplicate()
-	
+
 	path := newURL.Path()
 	// 末尾のスラッシュを削除
 	path = regexp.MustCompile(`/+$`).ReplaceAllString(path, "")
-	
+
 	// 最後のパスセグメントを削除
 	re := regexp.MustCompile(`/[^/]+$`)
 	newPath := re.ReplaceAllString(path, "") + "/"
-	
+
 	// 新しいURLを構築
 	newURLString := newURL.u.Scheme + "://" + newURL.u.Host + newPath
 	err := newURL.updatePath(newURLString)

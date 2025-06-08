@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTab_FormatTitleForEachSite(t *testing.T) {
+func TestTab_FormatForEachSite(t *testing.T) {
 	type fields struct {
 		Title string
 		URL   *value.URL
@@ -152,7 +152,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			tab.SetFormatterForTest()
 			tt.want.SetFormatterForTest()
 
-			err := tab.FormatTitleForEachSite()
+			err := tab.FormatForEachSite()
 			if tt.wantErr == nil {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.want, tab)

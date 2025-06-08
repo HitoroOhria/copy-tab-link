@@ -37,9 +37,9 @@ func (t *Tab) RemoveTabNumber() {
 	t.Title = t.Title.ReplaceAllString(`^[0-9]\. `, "")
 }
 
-// FormatTitleForEachSite はサイトに応じてタイトルを整形する
+// FormatForEachSite はサイトに応じてタイトルを整形する
 // 関数の仕様はテストを参照してください
-func (t *Tab) FormatTitleForEachSite() error {
+func (t *Tab) FormatForEachSite() error {
 	domain := value.NewDomain(t.URL)
 	path := value.NewPath(t.URL)
 
