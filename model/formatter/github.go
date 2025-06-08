@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+
+	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
 type GitHubFormatter struct{}
@@ -12,8 +14,8 @@ func (h *GitHubFormatter) Name() string {
 	return "GitHub"
 }
 
-func (h *GitHubFormatter) Match(u *url.URL) bool {
-	return u.Host == "github.com"
+func (h *GitHubFormatter) Match(domain value.Domain) bool {
+	return domain.MatchAsFQDN("github.com")
 }
 
 func (h *GitHubFormatter) Format(u *url.URL, title string) (string, error) {

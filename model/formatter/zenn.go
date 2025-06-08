@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+
+	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
 type ZennFormatter struct{}
@@ -12,8 +14,8 @@ func (h *ZennFormatter) Name() string {
 	return "Zenn"
 }
 
-func (h *ZennFormatter) Match(u *url.URL) bool {
-	return u.Host == "zenn.dev"
+func (h *ZennFormatter) Match(domain value.Domain) bool {
+	return domain.MatchAsFQDN("zenn.dev")
 }
 
 func (h *ZennFormatter) Format(u *url.URL, title string) (string, error) {

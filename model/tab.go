@@ -6,6 +6,7 @@ import (
 	"regexp"
 
 	"github.com/HitoroOhria/copy_tab_link/model/formatter"
+	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
 // Tab はタイトルを編集するためのタイトルと URL のセット
@@ -42,8 +43,10 @@ func (t *Tab) RemoveTabNumber() {
 // FormatTitleForEachSite はサイトに応じてタイトルを整形する
 // 関数の仕様はテストを参照してください
 func (t *Tab) FormatTitleForEachSite() error {
+	domain := value.NewDomain(t.URL)
+
 	for _, h := range t.formatters {
-		if !h.Match(t.URL) {
+		if !h.Match(domain) {
 			continue
 		}
 

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+
+	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
 type QiitaFormatter struct{}
@@ -12,8 +14,8 @@ func (h *QiitaFormatter) Name() string {
 	return "Qiita"
 }
 
-func (h *QiitaFormatter) Match(u *url.URL) bool {
-	return u.Host == "qiita.com"
+func (h *QiitaFormatter) Match(domain value.Domain) bool {
+	return domain.MatchAsFQDN("qiita.com")
 }
 
 func (h *QiitaFormatter) Format(u *url.URL, title string) (string, error) {

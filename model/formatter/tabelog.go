@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+
+	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
 type TabelogFormatter struct{}
@@ -12,8 +14,8 @@ func (h *TabelogFormatter) Name() string {
 	return "Tabelog"
 }
 
-func (h *TabelogFormatter) Match(u *url.URL) bool {
-	return u.Host == "tabelog.com"
+func (h *TabelogFormatter) Match(domain value.Domain) bool {
+	return domain.MatchAsFQDN("tabelog.com")
 }
 
 func (h *TabelogFormatter) Format(u *url.URL, title string) (string, error) {
