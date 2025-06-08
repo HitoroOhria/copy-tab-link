@@ -2,7 +2,6 @@ package formatter
 
 import (
 	"fmt"
-	"net/url"
 	"regexp"
 
 	"github.com/HitoroOhria/copy_tab_link/model/value"
@@ -18,16 +17,16 @@ func (h *GitHubFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsFQDN("github.com")
 }
 
-func (h *GitHubFormatter) Format(u *url.URL, title string) (string, error) {
+func (h *GitHubFormatter) Format(path value.Path, title string) (string, error) {
 	// リポジトリルートの場合: "golang/go: The Go programming language" -> "golang/go"
-	if regexp.MustCompile(`^/[^/]+/[^/]+/?$`).MatchString(u.Path) {
+	if path.MatchString(`^/[^/]+/[^/]+/?$`) {
 		re := regexp.MustCompile(`^(.+): .+$`)
 		replaced := re.ReplaceAllString(title, "$1")
 
 		return replaced, nil
 	}
 	// Issue の場合: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go" -> "fails with gcc 4.4.1 #1"
-	if regexp.MustCompile(`/issues/\d+$`).MatchString(u.Path) {
+	if path.MatchString(`/issues/\d+$`) {
 		re := regexp.MustCompile(`^.+: (.+) · Issue #(\d+) · .+$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 3 {
@@ -38,7 +37,7 @@ func (h *GitHubFormatter) Format(u *url.URL, title string) (string, error) {
 		return replaced, nil
 	}
 	// PR の場合: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go" -> "Fixed url parsing with invalid slashes. #9219"
-	if regexp.MustCompile(`/pull/\d+$`).MatchString(u.Path) {
+	if path.MatchString(`/pull/\d+$`) {
 		re := regexp.MustCompile(`^.+: (.+) by .+ · Pull Request #(\d+) · .+$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 3 {

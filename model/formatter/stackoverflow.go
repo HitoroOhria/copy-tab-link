@@ -2,7 +2,6 @@ package formatter
 
 import (
 	"fmt"
-	"net/url"
 	"regexp"
 
 	"github.com/HitoroOhria/copy_tab_link/model/value"
@@ -18,8 +17,8 @@ func (h *StackOverflowFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsFQDN("stackoverflow.com")
 }
 
-func (h *StackOverflowFormatter) Format(u *url.URL, title string) (string, error) {
-	if regexp.MustCompile(`^/questions/\d+/.+$`).MatchString(u.Path) {
+func (h *StackOverflowFormatter) Format(path value.Path, title string) (string, error) {
+	if path.MatchString(`^/questions/\d+/.+$`) {
 		re := regexp.MustCompile(`^[^-]+ - (.+) - Stack Overflow$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 2 {

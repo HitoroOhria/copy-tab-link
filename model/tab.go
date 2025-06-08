@@ -44,13 +44,14 @@ func (t *Tab) RemoveTabNumber() {
 // 関数の仕様はテストを参照してください
 func (t *Tab) FormatTitleForEachSite() error {
 	domain := value.NewDomain(t.URL)
+	path := value.NewPath(t.URL)
 
 	for _, h := range t.formatters {
 		if !h.Match(domain) {
 			continue
 		}
 
-		formatted, err := h.Format(t.URL, t.Title)
+		formatted, err := h.Format(path, t.Title)
 		if err != nil {
 			return fmt.Errorf("formatter.Format: name = %s, title = %s, url = %s: %w", h.Name(), t.Title, t.URL, err)
 		}

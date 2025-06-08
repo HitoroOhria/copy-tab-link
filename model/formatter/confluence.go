@@ -2,9 +2,7 @@ package formatter
 
 import (
 	"fmt"
-	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
@@ -19,8 +17,8 @@ func (h *ConfluenceFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsServer("atlassian.net")
 }
 
-func (h *ConfluenceFormatter) Format(u *url.URL, title string) (string, error) {
-	if strings.HasPrefix(u.Path, "/wiki/") {
+func (h *ConfluenceFormatter) Format(path value.Path, title string) (string, error) {
+	if path.MatchString(`/wiki/.+`) {
 		re := regexp.MustCompile(`^(.+?) - .+ - Confluence$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 2 {

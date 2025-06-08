@@ -2,7 +2,6 @@ package formatter
 
 import (
 	"fmt"
-	"net/url"
 	"regexp"
 
 	"github.com/HitoroOhria/copy_tab_link/model/value"
@@ -18,8 +17,8 @@ func (h *QiitaFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsFQDN("qiita.com")
 }
 
-func (h *QiitaFormatter) Format(u *url.URL, title string) (string, error) {
-	if regexp.MustCompile(`^/[^/]+/items/[a-f0-9]+$`).MatchString(u.Path) {
+func (h *QiitaFormatter) Format(path value.Path, title string) (string, error) {
+	if path.MatchString(`^/[^/]+/items/[a-f0-9]+$`) {
 		re := regexp.MustCompile(`^(.+?) #.+ - Qiita$`)
 		matches := re.FindStringSubmatch(title)
 		if len(matches) < 2 {
