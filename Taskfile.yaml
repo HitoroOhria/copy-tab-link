@@ -34,7 +34,7 @@ tasks:
   test:run:
     desc: Test specific case
     cmds:
-      - go test -v -run {{.NAME}}
+      - go test -v -run "{{.NAME}}" ./...
     requires:
       vars: [ NAME ]
 
