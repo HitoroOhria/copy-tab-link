@@ -93,7 +93,7 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "example.atlassian.net/wiki (Confluence) であり、ページである場合、ページタイトルのみを残すこと",
+			name: "example.atlassian.net であり、Confluence であり、ページである場合、ページタイトルのみを残すこと",
 			fields: fields{
 				Title: "設計ドキュメント - EXAMPLE - 開発チーム - Confluence",
 				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),

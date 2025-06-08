@@ -7,17 +7,18 @@ import (
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
-type ConfluenceFormatter struct{}
+type AtlassianFormatter struct{}
 
-func (h *ConfluenceFormatter) Name() string {
-	return "Confluence"
+func (h *AtlassianFormatter) Name() string {
+	return "Atlassian"
 }
 
-func (h *ConfluenceFormatter) Match(domain value.Domain) bool {
+func (h *AtlassianFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsServer("atlassian.net")
 }
 
-func (h *ConfluenceFormatter) Format(path value.Path, title string) (string, error) {
+func (h *AtlassianFormatter) Format(path value.Path, title string) (string, error) {
+	// Confluence の場合: "設計ドキュメント - EXAMPLE - 開発チーム - Confluence" -> "設計ドキュメント - Confluence"
 	if path.MatchString(`/wiki/.+`) {
 		re := regexp.MustCompile(`^(.+?) - .+ - Confluence$`)
 		matches := re.FindStringSubmatch(title)

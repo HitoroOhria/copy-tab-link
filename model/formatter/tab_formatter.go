@@ -15,6 +15,6 @@ var AllFormatters = []TabFormatter{
 	&QiitaFormatter{},
 	&StackOverflowFormatter{},
 	&ZennFormatter{},
-	&ConfluenceFormatter{},
+	&AtlassianFormatter{},
 	&TabelogFormatter{},
 }
