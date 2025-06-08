@@ -1,7 +1,6 @@
 package model_test
 
 import (
-	"net/url"
 	"testing"
 
 	"github.com/HitoroOhria/copy_tab_link/model"
@@ -12,7 +11,7 @@ import (
 func TestTab_FormatTitleForEachSite(t *testing.T) {
 	type fields struct {
 		Title string
-		URL   *url.URL
+		URL   *value.URL
 	}
 
 	tests := []struct {
@@ -126,6 +125,18 @@ func TestTab_FormatTitleForEachSite(t *testing.T) {
 			want: &model.Tab{
 				Title: value.Title("下北沢 肉バル Bon | 食べログ"),
 				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "tabelog.com であり、コース一一覧ページである場合、タイトルに店名のみを残し、リンクを店舗トップページにすること",
+			fields: fields{
+				Title: "コース一覧 : 下北沢 焼とりダービー - 下北沢/焼き鳥 | 食べログ",
+				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/party/"),
+			},
+			want: &model.Tab{
+				Title: value.Title("下北沢 焼とりダービー | 食べログ"),
+				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
 			},
 			wantErr: nil,
 		},

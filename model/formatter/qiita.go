@@ -14,11 +14,12 @@ func (h *QiitaFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsFQDN("qiita.com")
 }
 
-func (h *QiitaFormatter) Format(path value.Path, title value.Title) (value.Title, error) {
+func (h *QiitaFormatter) Format(path value.Path, title value.Title, url *value.URL) (value.Title, *value.URL, error) {
 	if path.MatchString(`^/[^/]+/items/[a-f0-9]+$`) {
 		parts := title.DisassembleIntoParts(`^(.+?) #.+ - Qiita$`)
-		return parts.Assemble("%s - Qiita", 0)
+		newTitle, err := parts.Assemble("%s - Qiita", 0)
+		return newTitle, url, err
 	}
 
-	return title, nil
+	return title, url, nil
 }

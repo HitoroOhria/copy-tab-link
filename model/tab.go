@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"net/url"
 
 	"github.com/HitoroOhria/copy_tab_link/model/formatter"
 	"github.com/HitoroOhria/copy_tab_link/model/value"
@@ -12,7 +11,7 @@ import (
 // 内部にハンドラーを保持し、サイトごとのタイトルの整形を行う
 type Tab struct {
 	Title value.Title
-	URL   *url.URL
+	URL   *value.URL
 
 	formatters []formatter.TabFormatter
 }
@@ -20,9 +19,9 @@ type Tab struct {
 func NewTab(title string, rawURL string) (*Tab, error) {
 	t := value.NewTitle(title)
 
-	u, err := url.Parse(rawURL)
+	u, err := value.NewURL(rawURL)
 	if err != nil {
-		return nil, fmt.Errorf("url.Parse: %w", err)
+		return nil, fmt.Errorf("value.NewURL: %w", err)
 	}
 
 	return &Tab{
@@ -49,12 +48,13 @@ func (t *Tab) FormatTitleForEachSite() error {
 			continue
 		}
 
-		formatted, err := h.Format(path, t.Title)
+		formatted, newURL, err := h.Format(path, t.Title, t.URL)
 		if err != nil {
 			return fmt.Errorf("formatter.Format: name = %s, title = %s, url = %s: %w", h.Name(), t.Title, t.URL, err)
 		}
 
 		t.Title = formatted
+		t.URL = newURL
 		return nil
 	}
 

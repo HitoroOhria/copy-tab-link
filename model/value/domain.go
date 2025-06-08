@@ -1,14 +1,13 @@
 package value
 
 import (
-	"net/url"
 	"strings"
 )
 
 // Domain は URL のドメイン
 type Domain string
 
-func NewDomain(u *url.URL) Domain {
+func NewDomain(u *URL) Domain {
 	return Domain(u.Hostname())
 }
 

@@ -14,11 +14,12 @@ func (h *StackOverflowFormatter) Match(domain value.Domain) bool {
 	return domain.MatchAsFQDN("stackoverflow.com")
 }
 
-func (h *StackOverflowFormatter) Format(path value.Path, title value.Title) (value.Title, error) {
+func (h *StackOverflowFormatter) Format(path value.Path, title value.Title, url *value.URL) (value.Title, *value.URL, error) {
 	if path.MatchString(`^/questions/\d+/.+$`) {
 		parts := title.DisassembleIntoParts(`^[^-]+ - (.+) - Stack Overflow$`)
-		return parts.Assemble("%s - Stack Overflow", 0)
+		newTitle, err := parts.Assemble("%s - Stack Overflow", 0)
+		return newTitle, url, err
 	}
 
-	return title, nil
+	return title, url, nil
 }

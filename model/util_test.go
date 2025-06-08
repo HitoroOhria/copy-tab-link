@@ -1,14 +1,15 @@
 package model_test
 
 import (
-	"net/url"
 	"testing"
+
+	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
-func parseURL(t *testing.T, rawURL string) *url.URL {
-	u, err := url.Parse(rawURL)
+func parseURL(t *testing.T, rawURL string) *value.URL {
+	u, err := value.NewURL(rawURL)
 	if err != nil {
-		t.Fatalf("url.Parse: %v", err)
+		t.Fatalf("value.NewURL: %v", err)
 	}
 
 	return u

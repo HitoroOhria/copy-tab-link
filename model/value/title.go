@@ -68,7 +68,7 @@ func (tp TitlePart) string() string {
 // title.Assemble("%s and %s", 0, 1)
 // //=> "first and second"
 func (tps TitleParts) Assemble(format string, partIndex ...int) (Title, error) {
-	if len(tps) < maxValue(partIndex)-1 {
+	if len(tps) <= maxValue(partIndex) {
 		return "", fmt.Errorf("partIndex is out of range. tps = %v, len(tps) = %d, partIndex = %v", tps, len(tps), partIndex)
 	}
 
