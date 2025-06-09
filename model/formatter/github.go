@@ -36,7 +36,7 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 	}
 	// PR の場合: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go" -> "Fixed url parsing with invalid slashes. #9219"
 	if path.MatchString(`/pull/\d+$`) {
-		parts, err := title.DisassembleIntoParts(`^.+: (.+) by .+ · Pull Request #(\d+) · .+$`)
+		parts, err := title.DisassembleIntoParts(`^(.+) by .+ · Pull Request #(\d+) · .+$`)
 		if err != nil {
 			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
 		}

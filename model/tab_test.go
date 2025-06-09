@@ -51,7 +51,7 @@ func TestTab_FormatForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
 			},
 			want: &model.Tab{
-				Title: value.Title("Fixed url parsing with invalid slashes. #9219"),
+				Title: value.Title("net/url: Fixed url parsing with invalid slashes. #9219"),
 				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
 			},
 			wantErr: nil,
