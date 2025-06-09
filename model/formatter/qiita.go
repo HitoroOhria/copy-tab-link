@@ -26,6 +26,7 @@ func (h *QiitaFormatter) Format(path value.Path, title value.Title, url *value.U
 		if err != nil {
 			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
 		}
+
 		return newTitle, url, nil
 	}
 

@@ -56,7 +56,6 @@ func (h *TabelogFormatter) Format(path value.Path, title value.Title, url *value
 		if err != nil {
 			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
 		}
-
 		// URLから /party/ を削除して店舗トップページにリダイレクト
 		newURL, err := url.RemoveLastPath()
 		if err != nil {

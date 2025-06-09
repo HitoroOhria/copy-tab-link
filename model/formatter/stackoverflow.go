@@ -26,6 +26,7 @@ func (h *StackOverflowFormatter) Format(path value.Path, title value.Title, url 
 		if err != nil {
 			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
 		}
+
 		return newTitle, url, nil
 	}
 

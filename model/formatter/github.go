@@ -31,6 +31,7 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 		if err != nil {
 			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
 		}
+
 		return newTitle, url, nil
 	}
 	// PR の場合: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go" -> "Fixed url parsing with invalid slashes. #9219"
@@ -43,6 +44,7 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 		if err != nil {
 			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
 		}
+
 		return newTitle, url, nil
 	}
 
