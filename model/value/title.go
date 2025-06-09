@@ -31,7 +31,7 @@ func (t Title) ReplaceAllString(re string, repl string) Title {
 }
 
 // DisassembleIntoParts はタイトルを部分に分解する
-func (t Title) DisassembleIntoParts(re string) TitleParts {
+func (t Title) DisassembleIntoParts(re string) (TitleParts, error) {
 	return newTitleParts(t, re)
 }
 
@@ -45,8 +45,14 @@ func newTitlePart(str string) TitlePart {
 // TitleParts はタイトル部分の集合
 type TitleParts []TitlePart
 
-func newTitleParts(title Title, re string) TitleParts {
+func newTitleParts(title Title, re string) (TitleParts, error) {
 	matches := regexp.MustCompile(re).FindStringSubmatch(title.string())
+	if len(matches) == 0 {
+		return nil, fmt.Errorf("regex is not matched. title = %s, re = %s", title, re)
+	}
+	if len(matches) == 1 {
+		return nil, fmt.Errorf("regex group is not matched. title = %s, re = %s", title, re)
+	}
 	matchGroups := matches[1:] // 最初の要素は正規表現の対象の文字列なので、スキップする
 
 	tps := make(TitleParts, 0, len(matches))
@@ -54,7 +60,7 @@ func newTitleParts(title Title, re string) TitleParts {
 		tps = append(tps, newTitlePart(match))
 	}
 
-	return tps
+	return tps, nil
 }
 
 func (tp TitlePart) string() string {

@@ -1,6 +1,8 @@
 package formatter
 
 import (
+	"fmt"
+
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
@@ -21,15 +23,27 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 	}
 	// Issue の場合: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go" -> "fails with gcc 4.4.1 #1"
 	if path.MatchString(`/issues/\d+$`) {
-		parts := title.DisassembleIntoParts(`^.+: (.+) · Issue #(\d+) · .+$`)
+		parts, err := title.DisassembleIntoParts(`^.+: (.+) · Issue #(\d+) · .+$`)
+		if err != nil {
+			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
+		}
 		newTitle, err := parts.Assemble("%s #%s", 0, 1)
-		return newTitle, url, err
+		if err != nil {
+			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
+		}
+		return newTitle, url, nil
 	}
 	// PR の場合: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go" -> "Fixed url parsing with invalid slashes. #9219"
 	if path.MatchString(`/pull/\d+$`) {
-		parts := title.DisassembleIntoParts(`^.+: (.+) by .+ · Pull Request #(\d+) · .+$`)
+		parts, err := title.DisassembleIntoParts(`^.+: (.+) by .+ · Pull Request #(\d+) · .+$`)
+		if err != nil {
+			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
+		}
 		newTitle, err := parts.Assemble("%s #%s", 0, 1)
-		return newTitle, url, err
+		if err != nil {
+			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
+		}
+		return newTitle, url, nil
 	}
 
 	return title, url, nil
