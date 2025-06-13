@@ -66,7 +66,7 @@ func main() {
 func handleError(err error, msg string) {
 	_, printErr := fmt.Fprintf(os.Stderr, "%s: %v\n", msg, err)
 	if printErr != nil {
-		log.Fatalf("fmt.Fprintf: %v\n. and %s: %v\n", printErr, msg, err)
+		log.Fatalf("fmt.Fprintf: %v\n%s: %v\n", printErr, msg, err)
 	}
 
 	os.Exit(1)
@@ -76,8 +76,8 @@ func handleError(err error, msg string) {
 func getBrowserTitle(appName string) (string, error) {
 	script := fmt.Sprintf(`tell application "%s" to get title of active tab of front window`, appName)
 	cmd := exec.Command("osascript", "-e", script)
-	output, err := cmd.Output()
 
+	output, err := cmd.Output()
 	if err != nil {
 		return "", fmt.Errorf("cmd.Output: %w", err)
 	}
