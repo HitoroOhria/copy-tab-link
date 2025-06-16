@@ -39,7 +39,7 @@ func TestTab_FormatForEachSite(t *testing.T) {
 				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
 			},
 			want: &model.Tab{
-				Title: value.Title("fails with gcc 4.4.1 #1"),
+				Title: value.Title("cmd/cgo: fails with gcc 4.4.1 #1"),
 				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
 			},
 			wantErr: nil,

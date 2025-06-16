@@ -23,7 +23,7 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 	}
 	// Issue の場合: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go" -> "fails with gcc 4.4.1 #1"
 	if path.MatchString(`/issues/\d+$`) {
-		parts, err := title.DisassembleIntoParts(`^.+: (.+) · Issue #(\d+) · .+$`)
+		parts, err := title.DisassembleIntoParts(`(.+) · Issue #(\d+) · .+$`)
 		if err != nil {
 			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
 		}
