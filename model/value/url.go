@@ -46,6 +46,10 @@ func (u *URL) Path() string {
 	return u.u.Path
 }
 
+func (u *URL) GetQueryParam(key string) string {
+	return u.u.Query().Get(key)
+}
+
 func (u *URL) RemoveLastPath() (*URL, error) {
 	newURL := u.duplicate()
 

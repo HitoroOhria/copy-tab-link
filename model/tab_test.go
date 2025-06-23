@@ -57,6 +57,18 @@ func TestTab_FormatForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "github.com であり、プロジェクトのサイド Issue ビューである場合、Issue タイトルと番号のみを残すこと",
+			fields: fields{
+				Title: "net/url: Fixed url parsing with invalid slashes. · golang/go",
+				URL:   parseURL(t, "https://github.com/orgs/golang/projects/5/views/1?pane=issue&itemId=116474225&issue=golang%7Cgo%7C1"),
+			},
+			want: &model.Tab{
+				Title: value.Title("net/url: Fixed url parsing with invalid slashes. #1"),
+				URL:   parseURL(t, "https://github.com/orgs/golang/projects/5/views/1?pane=issue&itemId=116474225&issue=golang%7Cgo%7C1"),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "qiita.com であり、記事である場合、タイトルのみを残すこと",
 			fields: fields{
 				Title: "ドメインの.comとか.jpってなに？ #FQDN - Qiita",
