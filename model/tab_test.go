@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTab_FormatForEachSite(t *testing.T) {
+func TestTab_FormatForEachSite_Integration(t *testing.T) {
 	type fields struct {
 		Title string
 		URL   *value.URL
@@ -21,7 +21,7 @@ func TestTab_FormatForEachSite(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "github.com であり、リポジトリルートである場合、パッケージ名のみを残すこと",
+			name: "適切なフォーマッターが選択され、GitHub の整形が実行される",
 			fields: fields{
 				Title: "golang/go: The Go programming language",
 				URL:   parseURL(t, "https://github.com/golang/go"),
@@ -33,43 +33,7 @@ func TestTab_FormatForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "github.com であり、Issue である場合、Issue タイトルと番号のみを残すこと",
-			fields: fields{
-				Title: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go",
-				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
-			},
-			want: &model.Tab{
-				Title: value.Title("cmd/cgo: fails with gcc 4.4.1 #1"),
-				URL:   parseURL(t, "https://github.com/golang/go/issues/1"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "github.com であり、PR である場合、PR タイトルと番号のみを残すこと",
-			fields: fields{
-				Title: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go",
-				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
-			},
-			want: &model.Tab{
-				Title: value.Title("net/url: Fixed url parsing with invalid slashes. #9219"),
-				URL:   parseURL(t, "https://github.com/golang/go/pull/9219"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "github.com であり、プロジェクトのサイド Issue ビューである場合、Issue タイトルと番号のみを残すこと",
-			fields: fields{
-				Title: "net/url: Fixed url parsing with invalid slashes. · golang/go",
-				URL:   parseURL(t, "https://github.com/orgs/golang/projects/5/views/1?pane=issue&itemId=116474225&issue=golang%7Cgo%7C1"),
-			},
-			want: &model.Tab{
-				Title: value.Title("net/url: Fixed url parsing with invalid slashes. #1"),
-				URL:   parseURL(t, "https://github.com/orgs/golang/projects/5/views/1?pane=issue&itemId=116474225&issue=golang%7Cgo%7C1"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "qiita.com であり、記事である場合、タイトルのみを残すこと",
+			name: "適切なフォーマッターが選択され、Qiita の整形が実行される",
 			fields: fields{
 				Title: "ドメインの.comとか.jpってなに？ #FQDN - Qiita",
 				URL:   parseURL(t, "https://qiita.com/miyuki_samitani/items/1667128245b14ae6e421"),
@@ -81,86 +45,14 @@ func TestTab_FormatForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "stackoverflow.com であり、記事である場合、タイトルのみを残すこと",
+			name: "該当するフォーマッターがない場合、元のタイトルとURLが保持される",
 			fields: fields{
-				Title: "python - How to `assert_called_with` an object instance? - Stack Overflow",
-				URL:   parseURL(t, "https://stackoverflow.com/questions/79656866/how-to-assert-called-with-an-object-instance"),
+				Title: "Example Domain",
+				URL:   parseURL(t, "https://example.com"),
 			},
 			want: &model.Tab{
-				Title: value.Title("How to `assert_called_with` an object instance? - Stack Overflow"),
-				URL:   parseURL(t, "https://stackoverflow.com/questions/79656866/how-to-assert-called-with-an-object-instance"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "zenn.com であり、記事である場合、Zenn を付与すること",
-			fields: fields{
-				Title: "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！",
-				URL:   parseURL(t, "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2"),
-			},
-			want: &model.Tab{
-				Title: value.Title("【初心者歓迎】第２回 AI Agent Hackathon、開催決定！ - Zenn"),
-				URL:   parseURL(t, "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "example.atlassian.net であり、Confluence であり、ページである場合、ページタイトルのみを残すこと",
-			fields: fields{
-				Title: "設計ドキュメント - EXAMPLE - 開発チーム - Confluence",
-				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),
-			},
-			want: &model.Tab{
-				Title: value.Title("設計ドキュメント - Confluence"),
-				URL:   parseURL(t, "https://example.atlassian.net/wiki/spaces/EXAMPLE/pages/1"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "amazon.co.jp であり、商品ページである場合、商品名のみを残し、URL を短縮すること",
-			fields: fields{
-				Title: "初めてのGo言語 ―他言語プログラマーのためのイディオマティックGo実践ガイド | Jon Bodner, 武舎 広幸 |本 | 通販 | Amazon",
-				URL:   parseURL(t, "https://www.amazon.co.jp/初めてのGo言語-―他言語プログラマーのためのイディオマティックGo実践ガイド-Jon-Bodner/dp/4814400047/ref=sr_1_5?__mk_ja_JP=カタカナ&crid=3JSO08O084J74&dib=eyJ2IjoiMSJ9.Kome8eBCZysR72wgx3sO3cPjPDiCUOiLWOpVm6XlXfk75W5ZmkNqqcJDPTjipCoQ__vO3wCh4dSJbAZ-vZK_PUdUAZR3coRs5zFIU6LDLfPpN10QzDJy55hwWPDW0uMzlPE6Zi3IbmBo4BWwJfdVDr9_24Jar313Wz1niHNQiRAAHtEpJfiZve2tj7CRUIPAedWScmCKmANbAuO8XJaxx_p-8lHPiJ1UXo8vro_eWNc4YfdOCu9EwSp6z2SSyJsehzESPjE-1diPIixV4FnBUnTmistmz8dITo0mY45ZSuc.ApSD2ueW7gLmuGUi94jbkwwqFsAqAHjQ6Lz-diZqr44&dib_tag=se&keywords=go+本&qid=1751089169&sprefix=go+本,aps,171&sr=8-5"),
-			},
-			want: &model.Tab{
-				Title: value.Title("初めてのGo言語 ―他言語プログラマーのためのイディオマティックGo実践ガイド"),
-				URL:   parseURL(t, "https://www.amazon.co.jp/dp/4814400047"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "tabelog.com であり、店舗ページトップである場合、店名のみを残すこと",
-			fields: fields{
-				Title: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ",
-				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
-			},
-			want: &model.Tab{
-				Title: value.Title("下北沢 焼とりダービーのご予約 | 食べログ"),
-				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "tabelog.com であり、店舗ページトップであり、店名に（）ありの場合、店名のみを残すこと",
-			fields: fields{
-				Title: "下北沢 肉バル Bon （ボン【旧店名】ワイン食堂 馬肉de Bon）のご予約 - 下北沢/バル | 食べログ",
-				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
-			},
-			want: &model.Tab{
-				Title: value.Title("下北沢 肉バル Bon | 食べログ"),
-				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13188119/"),
-			},
-			wantErr: nil,
-		},
-		{
-			name: "tabelog.com であり、コース一一覧ページである場合、タイトルに店名のみを残し、リンクを店舗トップページにすること",
-			fields: fields{
-				Title: "コース一覧 : 下北沢 焼とりダービー - 下北沢/焼き鳥 | 食べログ",
-				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/party/"),
-			},
-			want: &model.Tab{
-				Title: value.Title("下北沢 焼とりダービー | 食べログ"),
-				URL:   parseURL(t, "https://tabelog.com/tokyo/A1318/A131802/13283195/"),
+				Title: value.Title("Example Domain"),
+				URL:   parseURL(t, "https://example.com"),
 			},
 			wantErr: nil,
 		},
