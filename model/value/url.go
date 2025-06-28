@@ -70,3 +70,18 @@ func (u *URL) RemoveLastPath() (*URL, error) {
 
 	return newURL, nil
 }
+
+func (u *URL) ExtractAmazonASIN() (string, bool) {
+	asinRegex := regexp.MustCompile(`/dp/([A-Z0-9]{10})`)
+	matches := asinRegex.FindStringSubmatch(u.String())
+	if len(matches) > 1 {
+		return matches[1], true
+	}
+	return "", false
+}
+
+const baseAmazonDPURL = "https://www.amazon.co.jp/dp/"
+
+func (u *URL) CreateAmazonShortURL(asin string) (*URL, error) {
+	return NewURL(baseAmazonDPURL + asin)
+}

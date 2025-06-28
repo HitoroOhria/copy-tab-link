@@ -17,4 +17,5 @@ var AllFormatters = []TabFormatter{
 	&ZennFormatter{},
 	&AtlassianFormatter{},
 	&TabelogFormatter{},
+	&AmazonFormatter{},
 }

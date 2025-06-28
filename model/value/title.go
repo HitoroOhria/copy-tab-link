@@ -25,6 +25,16 @@ func (t Title) AddSuffix(prefix string) Title {
 	return NewTitle(t.string() + prefix)
 }
 
+func (t Title) TrimAfter(separator string) Title {
+	idx := strings.Index(t.string(), separator)
+	if idx != -1 {
+		trimmed := t.string()[:idx]
+		return NewTitle(trimmed)
+	}
+
+	return t
+}
+
 func (t Title) ReplaceAllString(re string, repl string) Title {
 	replaced := regexp.MustCompile(re).ReplaceAllString(t.string(), repl)
 	return NewTitle(replaced)

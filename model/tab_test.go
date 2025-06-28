@@ -117,6 +117,18 @@ func TestTab_FormatForEachSite(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "amazon.co.jp であり、商品ページである場合、商品名のみを残し、URL を短縮すること",
+			fields: fields{
+				Title: "初めてのGo言語 ―他言語プログラマーのためのイディオマティックGo実践ガイド | Jon Bodner, 武舎 広幸 |本 | 通販 | Amazon",
+				URL:   parseURL(t, "https://www.amazon.co.jp/初めてのGo言語-―他言語プログラマーのためのイディオマティックGo実践ガイド-Jon-Bodner/dp/4814400047/ref=sr_1_5?__mk_ja_JP=カタカナ&crid=3JSO08O084J74&dib=eyJ2IjoiMSJ9.Kome8eBCZysR72wgx3sO3cPjPDiCUOiLWOpVm6XlXfk75W5ZmkNqqcJDPTjipCoQ__vO3wCh4dSJbAZ-vZK_PUdUAZR3coRs5zFIU6LDLfPpN10QzDJy55hwWPDW0uMzlPE6Zi3IbmBo4BWwJfdVDr9_24Jar313Wz1niHNQiRAAHtEpJfiZve2tj7CRUIPAedWScmCKmANbAuO8XJaxx_p-8lHPiJ1UXo8vro_eWNc4YfdOCu9EwSp6z2SSyJsehzESPjE-1diPIixV4FnBUnTmistmz8dITo0mY45ZSuc.ApSD2ueW7gLmuGUi94jbkwwqFsAqAHjQ6Lz-diZqr44&dib_tag=se&keywords=go+本&qid=1751089169&sprefix=go+本,aps,171&sr=8-5"),
+			},
+			want: &model.Tab{
+				Title: value.Title("初めてのGo言語 ―他言語プログラマーのためのイディオマティックGo実践ガイド"),
+				URL:   parseURL(t, "https://www.amazon.co.jp/dp/4814400047"),
+			},
+			wantErr: nil,
+		},
+		{
 			name: "tabelog.com であり、店舗ページトップである場合、店名のみを残すこと",
 			fields: fields{
 				Title: "下北沢 焼とりダービーのご予約 - 下北沢/焼き鳥 | 食べログ",
