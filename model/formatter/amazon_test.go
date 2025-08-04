@@ -96,8 +96,8 @@ func TestAmazonFormatter_Format(t *testing.T) {
 				url:   parseURL(t, "https://www.amazon.co.jp/エンタープライズ-アプリケーションアーキテクチャパターン-Object-Oriented-SELECTION/dp/4798105538/ref=tmm_other_meta_binding_swatch_0?_encoding=UTF8&dib_tag=se&dib=eyJ2IjoiMSJ9.F869wwPCVh0DUDmFEGeb9wF23FDIlwAmutnU_HnpS25GhQ_rJUwqUVcHilAoiqCyXZfx0GH4kK0Nt4Pccsues4-Mpmejryw9OvZeKcI5ecWTJ0qDUMZNPKs-23vYi3k5qEKcraS0RkEom-5YgOX_biUmTVknS1TuXPzc-FpX9aRUnYZMN_-_SsQy8M-PBIFI_TUD8EMgWtBLszriQADb-M3o1nrfPlSq4RTEuNZjeCn_dFsFVmHIdbbVxSZ9fuUAKVM9IhLfzwZ0Wkij4Vh7YOi7q4uy88-JsEBjUcZS6FY.Www2pEz5FCZeQFlIhkw0Ip6WxglYcNRGBs15G4YIP-M&qid=1754283348&sr=8-1"),
 			},
 			want: want{
-				title: value.Title("エンタープライズアプリケーションアーキテクチャパターン (Object Oriented SELECTION)"),
-				url:   parseURL(t, "https://www.amazon.co.jp/dp/B01B5MX2O2"),
+				title: value.Title("エンタープライズ アプリケーションアーキテクチャパターン (Object Oriented SELECTION)"),
+				url:   parseURL(t, "https://www.amazon.co.jp/dp/4798105538"),
 			},
 			wantErr: false,
 		},
