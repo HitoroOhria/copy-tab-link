@@ -75,6 +75,32 @@ func TestAmazonFormatter_Format(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "amazon.co.jp であり、Kindle の商品ページである場合、商品名のみを残し、URL を短縮すること",
+			args: args{
+				path:  value.Path("/エンタープライズアプリケーションアーキテクチャパターン-マーチン・ファウラー-ebook/dp/B01B5MX2O2/ref=tmm_kin_swatch_0"),
+				title: value.Title("Amazon.co.jp: エンタープライズアプリケーションアーキテクチャパターン eBook : マーチン・ファウラー, 株式会社テクノロジックアート, 長瀬嘉秀, 長瀬嘉秀: Kindleストア"),
+				url:   parseURL(t, "https://www.amazon.co.jp/エンタープライズアプリケーションアーキテクチャパターン-マーチン・ファウラー-ebook/dp/B01B5MX2O2/ref=tmm_kin_swatch_0?_encoding=UTF8&dib_tag=se&dib=eyJ2IjoiMSJ9.F869wwPCVh0DUDmFEGeb9wF23FDIlwAmutnU_HnpS25GhQ_rJUwqUVcHilAoiqCyXZfx0GH4kK0Nt4Pccsues4-Mpmejryw9OvZeKcI5ecWTJ0qDUMZNPKs-23vYi3k5qEKcraS0RkEom-5YgOX_biUmTVknS1TuXPzc-FpX9aRUnYZMN_-_SsQy8M-PBIFI_TUD8EMgWtBLszriQADb-M3o1nrfPlSq4RTEuNZjeCn_dFsFVmHIdbbVxSZ9fuUAKVM9IhLfzwZ0Wkij4Vh7YOi7q4uy88-JsEBjUcZS6FY.Www2pEz5FCZeQFlIhkw0Ip6WxglYcNRGBs15G4YIP-M&qid=1754283348&sr=8-1"),
+			},
+			want: want{
+				title: value.Title("エンタープライズアプリケーションアーキテクチャパターン"),
+				url:   parseURL(t, "https://www.amazon.co.jp/dp/B01B5MX2O2"),
+			},
+			wantErr: false,
+		},
+		{
+			name: "amazon.co.jp であり、物理本の商品ページである場合、商品名のみを残し、URL を短縮すること",
+			args: args{
+				path:  value.Path("https://www.amazon.co.jp/エンタープライズ-アプリケーションアーキテクチャパターン-Object-Oriented-SELECTION/dp/4798105538/ref=tmm_other_meta_binding_swatch_0"),
+				title: value.Title("Amazon.co.jp: エンタープライズ アプリケーションアーキテクチャパターン (Object Oriented SELECTION) : マーチン・ファウラー, 長瀬 嘉秀, 株式会社 テクノロジックアート: 本"),
+				url:   parseURL(t, "https://www.amazon.co.jp/エンタープライズ-アプリケーションアーキテクチャパターン-Object-Oriented-SELECTION/dp/4798105538/ref=tmm_other_meta_binding_swatch_0?_encoding=UTF8&dib_tag=se&dib=eyJ2IjoiMSJ9.F869wwPCVh0DUDmFEGeb9wF23FDIlwAmutnU_HnpS25GhQ_rJUwqUVcHilAoiqCyXZfx0GH4kK0Nt4Pccsues4-Mpmejryw9OvZeKcI5ecWTJ0qDUMZNPKs-23vYi3k5qEKcraS0RkEom-5YgOX_biUmTVknS1TuXPzc-FpX9aRUnYZMN_-_SsQy8M-PBIFI_TUD8EMgWtBLszriQADb-M3o1nrfPlSq4RTEuNZjeCn_dFsFVmHIdbbVxSZ9fuUAKVM9IhLfzwZ0Wkij4Vh7YOi7q4uy88-JsEBjUcZS6FY.Www2pEz5FCZeQFlIhkw0Ip6WxglYcNRGBs15G4YIP-M&qid=1754283348&sr=8-1"),
+			},
+			want: want{
+				title: value.Title("エンタープライズアプリケーションアーキテクチャパターン (Object Oriented SELECTION)"),
+				url:   parseURL(t, "https://www.amazon.co.jp/dp/B01B5MX2O2"),
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
