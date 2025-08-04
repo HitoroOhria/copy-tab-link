@@ -1,8 +1,6 @@
 package formatter
 
 import (
-	"strings"
-
 	"github.com/HitoroOhria/copy_tab_link/model/value"
 )
 
@@ -35,27 +33,19 @@ func (f *AmazonFormatter) Format(path value.Path, title value.Title, url *value.
 }
 
 func (f *AmazonFormatter) formatTitle(title value.Title) value.Title {
-	titleStr := string(title)
-
-	// "Amazon.co.jp: " のプレフィックスを削除
-	if strings.HasPrefix(titleStr, "Amazon.co.jp: ") {
-		titleStr = strings.TrimPrefix(titleStr, "Amazon.co.jp: ")
+	// パターン1: "Amazon.co.jp: " で始まるタイトル（物理本・Kindle）
+	if parts, err := title.DisassembleIntoParts(`^Amazon\.co\.jp: (.+?) (?:eBook )?:.*$`); err == nil {
+		if formattedTitle, err := parts.Assemble("%s", 0); err == nil {
+			return formattedTitle
+		}
 	}
 
-	// " | " 以降を削除
-	if idx := strings.Index(titleStr, " |"); idx != -1 {
-		titleStr = titleStr[:idx]
+	// パターン2: " | " で区切られたタイトル（通常の商品）
+	if parts, err := title.DisassembleIntoParts(`^(.+?) \|.*$`); err == nil {
+		if formattedTitle, err := parts.Assemble("%s", 0); err == nil {
+			return formattedTitle
+		}
 	}
 
-	// " eBook :" 以降を削除（Kindle版の場合）
-	if idx := strings.Index(titleStr, " eBook :"); idx != -1 {
-		titleStr = titleStr[:idx]
-	}
-
-	// " :" 以降を削除（物理本の場合）
-	if idx := strings.Index(titleStr, " :"); idx != -1 {
-		titleStr = titleStr[:idx]
-	}
-
-	return value.Title(titleStr)
+	return title
 }
