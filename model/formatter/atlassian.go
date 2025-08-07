@@ -31,5 +31,19 @@ func (h *AtlassianFormatter) Format(path value.Path, title value.Title, url *val
 		return newTitle, url, nil
 	}
 
+	// Jira の場合: "[PROJ-123] ユーザー登録機能の改善 - Jira" -> "[PROJ-123] ユーザー登録機能の改善"
+	if path.MatchString(`/browse/.+`) {
+		parts, err := title.DisassembleIntoParts(`^(.+) - Jira$`)
+		if err != nil {
+			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
+		}
+		newTitle, err := parts.Assemble("%s", 0)
+		if err != nil {
+			return "", nil, fmt.Errorf("parts.Assemble: %w", err)
+		}
+
+		return newTitle, url, nil
+	}
+
 	return title, url, nil
 }

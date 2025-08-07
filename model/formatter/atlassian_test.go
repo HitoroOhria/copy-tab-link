@@ -70,6 +70,19 @@ func TestAtlassianFormatter_Format(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "example.atlassian.net であり、Jira であり、チケットである場合、タイトルから「- Jira」を削除すること",
+			args: args{
+				path:  value.Path("/browse/PROJ-123"),
+				title: value.Title("[PROJ-123] ユーザー登録機能の改善 - Jira"),
+				url:   parseURL(t, "https://example.atlassian.net/browse/PROJ-123"),
+			},
+			want: want{
+				title: value.Title("[PROJ-123] ユーザー登録機能の改善"),
+				url:   parseURL(t, "https://example.atlassian.net/browse/PROJ-123"),
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
