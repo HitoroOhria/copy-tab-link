@@ -17,7 +17,7 @@ func (h *StackOverflowFormatter) Match(domain value.Domain) bool {
 }
 
 func (h *StackOverflowFormatter) Format(path value.Path, title value.Title, url *value.URL) (value.Title, *value.URL, error) {
-	if path.MatchString(`^/questions/\d+/.+$`) {
+	if path.MatchString(`^/questions/\d+/.+/?$`) {
 		parts, err := title.DisassembleIntoParts(`^[^-]+ - (.+) - Stack Overflow$`)
 		if err != nil {
 			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)

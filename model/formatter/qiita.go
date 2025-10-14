@@ -17,7 +17,7 @@ func (h *QiitaFormatter) Match(domain value.Domain) bool {
 }
 
 func (h *QiitaFormatter) Format(path value.Path, title value.Title, url *value.URL) (value.Title, *value.URL, error) {
-	if path.MatchString(`^/[^/]+/items/[a-f0-9]+$`) {
+	if path.MatchString(`^/[^/]+/items/[a-f0-9]+/?$`) {
 		parts, err := title.DisassembleIntoParts(`^(.+?) #.+ - Qiita$`)
 		if err != nil {
 			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)

@@ -16,7 +16,7 @@ func (h *ZennFormatter) Match(domain value.Domain) bool {
 
 func (h *ZennFormatter) Format(path value.Path, title value.Title, url *value.URL) (value.Title, *value.URL, error) {
 	// 記事の場合: "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！" -> "【初心者歓迎】第２回 AI Agent Hackathon、開催決定！ - Zenn"
-	if path.MatchString(`^/[^/]+/.+$`) {
+	if path.MatchString(`^/[^/]+/.+/?$`) {
 		return title.AddSuffix(" - Zenn"), url, nil
 	}
 

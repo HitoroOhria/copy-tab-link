@@ -23,7 +23,7 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 		return title.ReplaceAllString(`^(.+): .+$`, "$1"), url, nil
 	}
 	// Issue の場合: "cmd/cgo: fails with gcc 4.4.1 · Issue #1 · golang/go" -> "fails with gcc 4.4.1 #1"
-	if path.MatchString(`/issues/\d+$`) {
+	if path.MatchString(`/issues/\d+/?$`) {
 		parts, err := title.DisassembleIntoParts(`(.+) · Issue #(\d+) · .+$`)
 		if err != nil {
 			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
@@ -36,7 +36,7 @@ func (h *GitHubFormatter) Format(path value.Path, title value.Title, url *value.
 		return newTitle, url, nil
 	}
 	// PR の場合: "net/url: Fixed url parsing with invalid slashes. by odeke-em · Pull Request #9219 · golang/go" -> "Fixed url parsing with invalid slashes. #9219"
-	if path.MatchString(`/pull/\d+$`) {
+	if path.MatchString(`/pull/\d+/?$`) {
 		parts, err := title.DisassembleIntoParts(`^(.+) by .+ · Pull Request #(\d+) · .+$`)
 		if err != nil {
 			return "", nil, fmt.Errorf("title.DisassembleIntoParts: %w", err)
