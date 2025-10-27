@@ -11,7 +11,7 @@ import (
 	"github.com/HitoroOhria/copy_tab_link/model"
 )
 
-const defaultBrowserAppName = "Brave Browser"
+const defaultBrowserAppName = "ChatGPT Atlas"
 
 func getArgs() string {
 	browserAppName := flag.String("browser-name", defaultBrowserAppName, "Browser app name.")
