@@ -11,18 +11,26 @@ import (
 	"github.com/HitoroOhria/copy_tab_link/model"
 )
 
-func getArgs() string {
+func getArgs() (string, error) {
 	defaultValue := os.Getenv("BROWSER_NAME")
 	browserAppName := flag.String("browser-name", defaultValue, "Browser app name.")
 	flag.Parse()
 
-	return *browserAppName
+	if *browserAppName == "" {
+		return "", fmt.Errorf("browser app name must be specified via -browser-name flag or BROWSER_NAME environment variable")
+	}
+
+	return *browserAppName, nil
 }
 
 // アクティブなブラウザのタイトルとリンクを取得し、Markdown形式でクリップボードにコピーする
 // 動作環境の対象は macOS である
 func main() {
-	browserAppName := getArgs()
+	browserAppName, err := getArgs()
+	if err != nil {
+		handleError(err, "failed to get args")
+		return
+	}
 
 	// ブラウザのタイトルを取得
 	title, err := getBrowserTitle(browserAppName)
