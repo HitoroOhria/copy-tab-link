@@ -9,12 +9,17 @@ import (
 	"strings"
 
 	"github.com/HitoroOhria/copy_tab_link/model"
+	"github.com/joho/godotenv"
 )
 
-const defaultBrowserAppName = "ChatGPT Atlas"
-
 func getArgs() string {
-	browserAppName := flag.String("browser-name", defaultBrowserAppName, "Browser app name.")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	defaultValue := os.Getenv("BROWSER_NAME")
+	browserAppName := flag.String("browser-name", defaultValue, "Browser app name.")
 	flag.Parse()
 
 	return *browserAppName

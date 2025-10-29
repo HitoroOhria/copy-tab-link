@@ -1,7 +1,6 @@
 version: "3"
 
-vars:
-  BROWSER_NAME: "Brave Browser"
+dotenv: [ ".env" ]
 
 tasks:
   default:
@@ -19,7 +18,7 @@ tasks:
     cmds:
       - go run ./... -browser-name="{{.BROWSER_NAME}}"
     vars:
-      BROWSER_NAME: "{{.BROWSER_NAME}}"
+      BROWSER_NAME: '{{.BROWSER_NAME | default "$BROWSER_NAME"}}'
 
   fmt:
     desc: Format go program
@@ -46,10 +45,10 @@ tasks:
   dev:title:
     desc: Get browser title for debug
     cmds:
-      - open "{{.URL}}"
+      - open -a "$BROWSER_NAME" "{{.URL}}"
       - sleep 2
       - |
-        osascript -e 'tell application "{{.BROWSER_NAME}}" to get title of active tab of front window' | \
+        osascript -e "tell application \"$BROWSER_NAME\" to get title of active tab of front window" | \
           tee /dev/tty | \
           pbcopy
     requires:
