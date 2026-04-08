@@ -11,22 +11,50 @@ import (
 	"github.com/HitoroOhria/copy_tab_link/model"
 )
 
-func getArgs() (string, error) {
-	defaultValue := os.Getenv("BROWSER_NAME")
-	browserAppName := flag.String("browser-name", defaultValue, "Browser app name.")
-	flag.Parse()
-
-	if *browserAppName == "" {
-		return "", fmt.Errorf("browser app name must be specified via -browser-name flag or BROWSER_NAME environment variable")
+// getBrowserAppName は与えられたブラウザのアプリ名を取得する
+// - BROWSER_NAME 環境変数
+// - browser-name CLI 引数
+// - macOS のデフォルトブラウザ
+func getBrowserAppName() (string, error) {
+	envValue := os.Getenv("BROWSER_NAME")
+	if envValue != "" {
+		return envValue, nil
 	}
 
-	return *browserAppName, nil
+	argValue := flag.String("browser-name", "", "Browser app name.")
+	flag.Parse()
+	if *argValue != "" {
+		return *argValue, nil
+	}
+
+	defaultApp, err := getDefaultBrowserName()
+	if err != nil {
+		return "", fmt.Errorf("getDefaultBrowserName: %w", err)
+	}
+
+	return defaultApp, nil
+}
+
+// getDefaultBrowserName は macOS のデフォルトブラウザのアプリ名を取得する
+func getDefaultBrowserName() (string, error) {
+	script := `
+ObjC.import("AppKit");
+$.NSWorkspace.sharedWorkspace.URLForApplicationToOpenURL($.NSURL.URLWithString("https://")).lastPathComponent.js.replace(/\.app$/, "")
+`
+	cmd := exec.Command("osascript", "-l", "JavaScript", "-e", script)
+
+	output, err := cmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("cmd.Output: %w", err)
+	}
+
+	return strings.TrimSpace(string(output)), nil
 }
 
 // アクティブなブラウザのタイトルとリンクを取得し、Markdown形式でクリップボードにコピーする
 // 動作環境の対象は macOS である
 func main() {
-	browserAppName, err := getArgs()
+	browserAppName, err := getBrowserAppName()
 	if err != nil {
 		handleError(err, "failed to get args")
 		return
